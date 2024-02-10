@@ -1,0 +1,15 @@
+{
+  "name": "social-media-api-with-nosql",
+  "version": "1.0.1",
+  "description": "Social Media API backend with Mongoose NoSQL",
+  "main": "server.js",
+  "license": "ISC",
+  "scripts": {
+    "start": "node server",
+    "seed": "node utils/seed"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.1.1"
+  }
+}
