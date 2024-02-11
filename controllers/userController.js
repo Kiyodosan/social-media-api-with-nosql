@@ -79,5 +79,40 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  //// add friend POST and DELETE request functionality here
+  // Add a friend to a user
+  async addFriend(req, res) {
+    try {
+      const user = await User.findOneAndUpdate(
+        { _id: req.params.id },
+        { $addToSet: { friends: req.body } },
+        { runValidators: true, new: true },
+      );
+
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+  // Remove a friend from a user
+  async removeFriend(req, res) {
+    try {
+      const user = await User.findOneAndUpdate(
+        { _id: req.params.id },
+        { $pull: { friends: { _id: req.params.friendId } } },
+        { runValidators: true, new: true },
+      );
+
+      if (!user) {
+        res.status(404).json({ message: 'User not found' });
+      }
+
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
 };
