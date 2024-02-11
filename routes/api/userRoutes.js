@@ -17,6 +17,7 @@ router.route('/')
 // /api/users/:id
 router.route('/:id')
   .get(getUser)
+  //// Should I use patch requests instead?
   .put(updateUser)
   .delete(deleteUser);
 
