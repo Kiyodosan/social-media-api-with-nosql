@@ -1,15 +1,14 @@
-//// might need Thought.deleteMany like example shown in courseController.js line 48 of mini project
-
 const { ObjectId } = require('mongoose').Types;
 const { User, Thought } = require('../models');
-
-//// write functions here
 
 module.exports = {
   // Get all users
   async getUsers(req, res) {
     try {
       const users = await User.find()
+        .select('-__v')
+        .populate('thoughts')
+        .populate('friends');
       res.json(users);
     } catch (err) {
       res.status(500).json(err);
@@ -19,11 +18,9 @@ module.exports = {
   async getUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.id })
-        //// Check .populate syntax to make sure multiple parameters can be passed in like this
-        .populate('thoughts', 'friends');
-        //// Do I need .select and .lean?
-/*         .select('-__v')
-        .lean(); */
+        .select('-__v')
+        .populate('thoughts')
+        .populate('friends');
       
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
@@ -49,7 +46,6 @@ module.exports = {
       const user = await User.findOneAndUpdate(
         { _id: req.params.id },
         { $set: req.body },
-        //// Do I need validators?
         { runValidators: true, new: true }
       );
 
@@ -57,23 +53,40 @@ module.exports = {
         return res.status(404).json({ message: 'User not found' });
       }
 
+      //// Might not be necessary, since friends are associated by ID
+/*       const friendUser = await User.updateMany(
+        { friends: { username: user.username } },
+        { $set: { _id: req.params.id } },
+        { runValidators: true, new: true }
+      ); */
+
       res.json(user);
     } catch (err) {
       res.status(500).json(err);
     }
   },
-  // Delete a user and remove all user's thoughts
+  // Delete a user and remove all user's friend associations and thoughts
   async deleteUser(req, res) {
     try {
-      //// Is it supposed to be findOneAndRemove?
-      const user = findOneAndDelete({ _id: req.params.id });
+      const user = await User.findOneAndDelete({ _id: req.params.id });
 
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
 
+      await User.updateMany(
+        { friends: { _id: req.params.id } },
+        { $pull: { friends: { _id: req.params.id } } },
+        { runValidators: true, new: true }
+      );
+
       //// Is it user.username that we're searching for?
       await Thought.deleteMany({ username: { $in: user.username } });
+
+/*       if (!thoughts) {
+        return res.status(404).json({ message: 'User removed, but thought not found' });
+      } */
+
       res.json({ message: 'User and all associated thoughts removed' });
     } catch (err) {
       res.status(500).json(err);
@@ -84,7 +97,7 @@ module.exports = {
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.id },
-        { $addToSet: { friends: req.body } },
+        { $addToSet: { friends: { _id: req.params.friendId } } },
         { runValidators: true, new: true },
       );
 
@@ -108,6 +121,12 @@ module.exports = {
 
       if (!user) {
         res.status(404).json({ message: 'User not found' });
+      }
+
+      const friendUser = await User.findOne({ _id: req.params.friendId });
+      
+      if (!friendUser) {
+        res.status(404).json({ message: 'Friend not found' });
       }
 
       res.json(user);

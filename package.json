@@ -6,10 +6,11 @@
   "license": "ISC",
   "scripts": {
     "start": "node server",
-    "seed": "node utils/seed"
+    "seed": "node seeds/seed"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "mongoose": "^8.1.1"
+    "mongoose": "^8.1.1",
+    "validator": "^13.11.0"
   }
 }

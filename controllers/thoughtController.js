@@ -1,13 +1,12 @@
-const { Thought } = require('../models');
-
-//// write functions here
+const { Thought, User } = require('../models');
 
 module.exports = {
   // Get all thoughts
   async getThoughts(req, res) {
     try {
       const thoughts = await Thought.find()
-        .populate('thoughts');
+        .select('-__v')
+        .populate('reactions');
       res.json(thoughts);
     } catch (err) {
       res.status(500).json(err);
@@ -17,7 +16,8 @@ module.exports = {
   async getThought(req, res) {
     try {
       const thought = await Thought.findOne({ _id: req.params.id })
-        .populate('thoughts');
+        .select('-__v')
+        .populate('reactions');
 
       if (!thought) {
         return res.status(404).json({ message: 'Thought not found' });
@@ -32,6 +32,17 @@ module.exports = {
   async createThought(req, res) {
     try {
       const thought = await Thought.create(req.body);
+
+      const user = await User.findOneAndUpdate(
+        { username: req.body.username },
+        { $addToSet: { thoughts: { _id: thought._id } } },
+        { new: true },
+      );
+
+      if (!user) {
+        return res.status(404).json({ message: 'Thought created, but user not found' });
+      }
+
       res.json(thought);
     } catch (err) {
       return res.status(500).json(err);
@@ -43,13 +54,23 @@ module.exports = {
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.id },
         { $set: req.body },
-        //// do I need a validator here?
         { runValidators: true, new: true }
       );
 
       if (!thought) {
         return res.status(404).json({ message: 'Thought not found' });
       }
+
+      //// Might not need this, since thought is associated by ID
+/*       const user = await User.findOneAndUpdate(
+        { username: thought.username },
+        { $addToSet: { thoughts: thought._id } },
+        { new: true },
+      );
+
+      if (!user) {
+        return res.status(404).json({ message: 'Thought updated, but user not found.' });
+      } */
 
       res.json(thought);
     } catch (err) {
@@ -65,6 +86,16 @@ module.exports = {
         return res.status(404).json({ message: 'Thought not found' });
       }
 
+      const user = await User.findOneAndUpdate(
+        { username: thought.username },
+        { $pull: { thoughts: { _id: req.params.id } } },
+        { new: true },
+      );
+
+      if (!user) {
+        return res.status(404).json({ message: 'Thought created, but user not found.' });
+      }
+
       res.json({ message: 'Thought removed' });
     } catch (err) {
       res.status(500).json(err);
@@ -75,7 +106,7 @@ module.exports = {
     try {
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.id },
-        { $addToSet: { reactions: req.body }},
+        { $addToSet: { reactions: req.body } },
         { runValidators: true, new: true },
       );
 
@@ -101,7 +132,7 @@ module.exports = {
         res.status(404).json({ message: 'Thought not found' });
       }
 
-      res.json(thought);
+      res.json({ message: 'Reaction removed' });
     } catch (err) {
       res.status(500).json(err);
     }

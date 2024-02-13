@@ -22,12 +22,12 @@ router.route('/:id')
   .delete(deleteUser);
 
 // /api/users/:id/friends
-router.route('/:id/friends')
-  .post(addFriend);
+/* router.route('/:id/friends')
+  .post(addFriend); */
 
-//// Find out where to add this /friends/:friendId route
 // /api/users/:id/friends/:friendId
 router.route('/:id/friends/:friendId')
+  .post(addFriend)
   .delete(removeFriend);
 
 module.exports = router;
