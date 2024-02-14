@@ -5,7 +5,6 @@ const { getRandomUser, sampleThoughts } = require('./data');
 connection.on('error', (err) => err);
 
 connection.once('open', async () => {
-  //// Is it supposed to be name: 'thoughts' and name: 'users'?
   let thoughtCheck = await connection.db.listCollections({ name: 'thoughts' }).toArray();
   if (thoughtCheck.length) {
     await connection.dropCollection('thoughts');

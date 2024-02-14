@@ -29,7 +29,6 @@ Open the command terminal. Enter "npm run seed" to refresh the tables in the dat
 
 Make sure Insomnia is installed on your device. If Insomnia is not installed, go to https://insomnia.rest/download and download the appropriate version for your operating system (Windows / MacOS / Ubuntu).
 
-<!-- Might use PATCH requests instead of PUT -->
 Open Insomnia and select an existing collection or create a new one. Create HTTP requests using CRUD operations for the desired routes. Use addresses found in the "How to use this project" section to configure your HTTP requests. For POST and PUT requests, additionally add data in JSON format in the request body before sending.
 
 ## How to use this project
@@ -59,9 +58,8 @@ Example:
 
 #### GET
 
-Use a GET request to retrieve a specific user by _id. This will also include any friends and thoughts created by the user.
+Use a GET request to retrieve a specific user by _id. This will also include any friends added and thoughts created by the user.
 
-<!-- Might use PATCH requests instead of PUT -->
 #### PUT
 
 Use a PUT request to update a specific user by _id. This request requires a request body in JSON format.
@@ -77,7 +75,7 @@ Example:
 
 Use a DELETE request to remove a specific user by _id.
 
-``http://localhost:3004/api/users/:id/friends``
+<!-- ``http://localhost:3004/api/users/:id/friends``
 
 * :id must be replaced with a user ID
 
@@ -85,18 +83,21 @@ Use a DELETE request to remove a specific user by _id.
 
 Use a POST request to add a friend to a specific user. This request requires a request body in JSON format.
 
-<!-- Need to make sure if this example is written correctly -->
 Example:
 
 {
   "username": "friend",
   "email": "friend@example.com",
-}
+} -->
 
 ``http://localhost:3004/api/users/:id/friends/:friendId``
 
 * :id must be replaced with a user ID
 * :friendId must be replaced with a different user ID
+
+#### POST
+
+Use a POST request to add a friend to a specific user.
 
 #### DELETE
 
@@ -129,7 +130,6 @@ Example:
 
 Use a GET request to retrieve a specific thought by _id. This will also include the user who posted it and any reactions added.
 
-<!-- Might use PATCH requests instead of PUT -->
 #### PUT
 
 Use a PUT request to update a specific thought by _id. This request requires a request body in JSON format.

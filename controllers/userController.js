@@ -80,12 +80,7 @@ module.exports = {
         { runValidators: true, new: true }
       );
 
-      //// Is it user.username that we're searching for?
       await Thought.deleteMany({ username: { $in: user.username } });
-
-/*       if (!thoughts) {
-        return res.status(404).json({ message: 'User removed, but thought not found' });
-      } */
 
       res.json({ message: 'User and all associated thoughts removed' });
     } catch (err) {

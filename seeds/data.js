@@ -133,8 +133,6 @@ const sampleThoughts = (count, users) => {
   for (let i = 0; i < count; i++) {
     results.push({
       thoughtText: `thought ${++i}`,
-      //// Not sure if a user can be added without association from a User model instance
-      //// Should username value be wrapped in a template literal?
       username: `${getRandomArrItem(users)}`,
       reactions: sampleReactions(users),
     });
