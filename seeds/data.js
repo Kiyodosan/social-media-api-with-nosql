@@ -125,7 +125,7 @@ const sampleReactions = (users) => {
     });
   }
   return results;
-}
+};
 
 // Generates an array of n thoughts using an array of users given
 const sampleThoughts = (count, users) => {
@@ -138,6 +138,6 @@ const sampleThoughts = (count, users) => {
     });
   }
   return results;
-}
+};
 
 module.exports = { getRandomUser, sampleThoughts };

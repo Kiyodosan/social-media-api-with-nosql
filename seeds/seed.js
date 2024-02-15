@@ -45,6 +45,11 @@ connection.once('open', async () => {
   const userData = await User.insertMany(users);
 
   //// Trying to associate thoughts with correct user.
+
+  //// Ultimately made the decision to comment this out for later, since it would make more sense to use 
+  //// the user ID as the filter, but since this assignment required the usage of username, I have 
+  //// decided to leave this feature out for now.
+  
 /*   const thoughts = [...thoughtData.map(({_id}) => _id)];
   for (let i = 0; i < thoughts.length; i++) {
     await User.findOneAndUpdate(

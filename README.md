@@ -19,9 +19,7 @@ This social media API is a backend-only project that uses NoSQL with MongoDB and
 
 Click on the following image to watch a demo video on how to use this project:
 
-[![Social Media API with NoSQL - demo video](</imagelinkgoeshere>)](https://Google drive link goes here/)
-
-<!-- [![Wrong Opinion Blog - demo](</public/assets/images/wrong opinion blog - demo image.png>)](https://wrong-opinion-blog-7a019de71561.herokuapp.com/) -->
+[![Social Media API with NoSQL - demo video](<assets/images/Screenshot 2024-02-14 220916.png>)](https://drive.google.com/file/d/1tv5RoNb6MyA_9_YDjLJkn_DMfC55ImpE/view?usp=drive_link)
 
 Make sure Node.js is installed on your device. You can open the command terminal and enter "node -v" to check if node is installed. If the command terminal responds back with a version of Node, then it is installed. Otherwise, go to https://nodejs.org/en/download/ and download the LTS version of Node for your operating system (Windows, Mac, Linux, etc.).
 
@@ -75,7 +73,7 @@ Example:
 
 Use a DELETE request to remove a specific user by _id.
 
-<!-- ``http://localhost:3004/api/users/:id/friends``
+``http://localhost:3004/api/users/:id/friends``
 
 * :id must be replaced with a user ID
 
@@ -86,18 +84,13 @@ Use a POST request to add a friend to a specific user. This request requires a r
 Example:
 
 {
-  "username": "friend",
-  "email": "friend@example.com",
-} -->
+  "_id": "65cd9f72982a5d5377f0e44a"
+}
 
 ``http://localhost:3004/api/users/:id/friends/:friendId``
 
 * :id must be replaced with a user ID
 * :friendId must be replaced with a different user ID
-
-#### POST
-
-Use a POST request to add a friend to a specific user.
 
 #### DELETE
 

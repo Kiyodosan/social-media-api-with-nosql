@@ -53,13 +53,6 @@ module.exports = {
         return res.status(404).json({ message: 'User not found' });
       }
 
-      //// Might not be necessary, since friends are associated by ID
-/*       const friendUser = await User.updateMany(
-        { friends: { username: user.username } },
-        { $set: { _id: req.params.id } },
-        { runValidators: true, new: true }
-      ); */
-
       res.json(user);
     } catch (err) {
       res.status(500).json(err);
@@ -92,7 +85,8 @@ module.exports = {
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.id },
-        { $addToSet: { friends: { _id: req.params.friendId } } },
+        // { $addToSet: { friends: { _id: req.params.friendId } } },
+        { $addToSet: { friends: req.body } },
         { runValidators: true, new: true },
       );
 
@@ -110,18 +104,12 @@ module.exports = {
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.id },
-        { $pull: { friends: { _id: req.params.friendId } } },
+        { $pull: { friends: req.params.friendId } },
         { runValidators: true, new: true },
       );
 
       if (!user) {
         res.status(404).json({ message: 'User not found' });
-      }
-
-      const friendUser = await User.findOne({ _id: req.params.friendId });
-      
-      if (!friendUser) {
-        res.status(404).json({ message: 'Friend not found' });
       }
 
       res.json(user);

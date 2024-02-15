@@ -61,17 +61,6 @@ module.exports = {
         return res.status(404).json({ message: 'Thought not found' });
       }
 
-      //// Might not need this, since thought is associated by ID
-/*       const user = await User.findOneAndUpdate(
-        { username: thought.username },
-        { $addToSet: { thoughts: thought._id } },
-        { new: true },
-      );
-
-      if (!user) {
-        return res.status(404).json({ message: 'Thought updated, but user not found.' });
-      } */
-
       res.json(thought);
     } catch (err) {
       res.status(500).json(err);
