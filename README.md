@@ -1,5 +1,5 @@
 
-# social-media-api-with-nosql
+# Social Media API with NoSQL
 
 ---
 
